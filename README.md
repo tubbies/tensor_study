@@ -117,7 +117,9 @@ node3 :  Tensor("Add:0", shape=(), dtype=float32)
 >> print("sess.run(node3): ",sess.run(node3))
 sess.run(node3): 7.0
 ```
+
 Computational graph of this flow should be like this.
+
 ![tf.add](https://www.tensorflow.org/images/getting_started_add.png)
 
 #### Running Graph
@@ -169,19 +171,19 @@ Computational graph of this flow should be like this.
 
 #### Random Values
 
-- tf.random_normal : Create Random normally distributed value with mean and standard deviation.
+- tf.random\_normal : Create Random normally distributed value with mean and standard deviation.
 
 	> tf.random_normal(shape, mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None)
 
-- tf.random_uniform : Create uniformly distributed value with minimum and maximum values.
+- tf.random\_uniform : Create uniformly distributed value with minimum and maximum values.
 
 	> tf.random_uniform(shape, minval=0, maxval=None, dtype=tf.float32, seed=None, name=None)
 
-- tf.random_gamma : Create gamma distribution
+- tf.random\_gamma : Create gamma distribution
 
 	> tf.random_gamma(shape, alpha, beta=None, dtype=tf.float32, seed=None, name=None)
 
-- tf.set_random_seed : Sets a graph-level random seed.
+- tf.set\_random\_seed : Sets a graph-level random seed.
 
     > tf.set_random_seed(seed)
 
@@ -222,8 +224,11 @@ Computational graph of this flow should be like this.
     
     
 [1] https://www.tensorflow.org/install/install_linux
+
 [2] https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45166.pdf
+
 [3] https://www.tensorflow.org/
+
 [4] https://www.tensorflow.org/versions/master/api_docs/python/
 
 [TensorFlow 시작하기.md](https://gist.github.com/haje01/202ac276bace4b25dd3f)
