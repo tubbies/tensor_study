@@ -71,7 +71,7 @@
 - A Tensorflow computation is described by a directed _graph_, which is compoed of a set of _nodes_.
 
 
-## Getting Started
+## Getting Started with Basic APIs
 
 Tensorflow has APIs available in several languages such as [Python](https://www.python.org), [C++](https://en.wikipedia.org/wiki/The_C%2B%2B_Programming_Language), [Java](https://www.java.com), [Go](https://golang.org/). In those APIs, Python API is the most complete and the easist to use. 
 Thus, In this guide, I will explain with Python APIs.
@@ -117,9 +117,7 @@ node3 :  Tensor("Add:0", shape=(), dtype=float32)
 >> print("sess.run(node3): ",sess.run(node3))
 sess.run(node3): 7.0
 ```
-
 Computational graph of this flow should be like this.
-
 ![tf.add](https://www.tensorflow.org/images/getting_started_add.png)
 
 #### Running Graph
@@ -171,19 +169,19 @@ Computational graph of this flow should be like this.
 
 #### Random Values
 
-- tf.random\_normal : Create Random normally distributed value with mean and standard deviation.
+- tf.random_normal : Create Random normally distributed value with mean and standard deviation.
 
 	> tf.random_normal(shape, mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None)
 
-- tf.random\_uniform : Create uniformly distributed value with minimum and maximum values.
+- tf.random_uniform : Create uniformly distributed value with minimum and maximum values.
 
 	> tf.random_uniform(shape, minval=0, maxval=None, dtype=tf.float32, seed=None, name=None)
 
-- tf.random\_gamma : Create gamma distribution
+- tf.random_gamma : Create gamma distribution
 
 	> tf.random_gamma(shape, alpha, beta=None, dtype=tf.float32, seed=None, name=None)
 
-- tf.set\_random\_seed : Sets a graph-level random seed.
+- tf.set_random_seed : Sets a graph-level random seed.
 
     > tf.set_random_seed(seed)
 
@@ -210,25 +208,51 @@ Computational graph of this flow should be like this.
 
 	> tf.placeholder(dtype, shape=None, name=None)
 
-	```python
-    x = tf.placeholder(tf.float32, shape=(1024, 1024))
-	y = tf.matmul(x, x)
-
-	with tf.Session() as sess:
-  		print(sess.run(y))  # ERROR: will fail because x was not fed.
-
-  	rand_array = np.random.rand(1024, 1024)
-  	print(sess.run(y, feed_dict={x: rand_array}))  # Will succeed.
+    ```python
+    >> W = tf.Variable([ 0.3], tf.float32)
+    >> b = tf.Variable([-0.3], tf.float32)
+    >> x = tf.placeholder(tf.float32)
+    >> linear_model = W * x + b
+    >> init = tf.global_variables_initializer()
+    >> sess = tf.Session()
+    >> sess.run(init)
+    >> print(sess.run(linear_model))    # Error : will fail because x was not fed.
+    >> print(sess.run(linear_model, {x:[1,2,3,4]})) # Succeed
+    [0, 0.300001, 0.600002, 0.9000004]
     ```
     
-    
+#### tf.train
+
+- Tensorflow provides varios optimizers. The simplest optimizer is **gradient descent** optimizer that slowly change each variable in order to minimize loss function.
+
+	```python
+    >> import numpy as np
+	>> import tensorflow as tf
+	>> W = tf.Variable([.3], tf.float32)
+	>> b = tf.Variable([-.3], tf.float32)
+	>> x = tf.placeholder(tf.float32)
+	>> y = tf.placeholder(tf.float32)
+	>> linear_model = W * x + b
+	>> loss = tf.reduce_sum(tf.square(linear_model - y)) # sum of the squares
+	>> optimizer = tf.train.GradientDescentOptimizer(0.01) # optimizer
+	>> train = optimizer.minimize(loss) # training data
+	>> x_train = [1,2,3,4]
+	>> y_train = [0,-1,-2,-3]
+	>> init = tf.global_variables_initializer()
+	>> sess = tf.Session()
+	>> sess.run(init) # reset values to wrong
+	>> for i in range(1000):
+	>>     sess.run(train, {x:x_train, y:y_train})
+	>> curr_W, curr_b, curr_loss  = sess.run([W, b, loss], {x:x_train, y:y_train})
+	>> print("W: %s b: %s loss: %s"%(curr_W, curr_b, curr_loss))
+	W: [-0.9999969] b: [ 0.99999082] loss: 5.69997e-11
+    ```
+
+
     
 [1] https://www.tensorflow.org/install/install_linux
-
 [2] https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45166.pdf
-
 [3] https://www.tensorflow.org/
-
 [4] https://www.tensorflow.org/versions/master/api_docs/python/
 
 [TensorFlow 시작하기.md](https://gist.github.com/haje01/202ac276bace4b25dd3f)
