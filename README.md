@@ -189,12 +189,31 @@ Computational graph of this flow should be like this.
 
 - **Variables** is class of tensorflow.
 - Variables class maintain state(s) or parameter(s) in the graph.
+- You have to _initialize_ your variable before the session execution.
 
 - tf.Variables : Tensorflow graph that has multiple functionality
 
 	it has initialization member function like this
 
 	> tf.Variable.__init__(initial_value=None, trainable=True, collections=None, validate_shape=True, caching_device=None, name=None, variable_def=None, dtype=None) {:#Variable.init}
+
+	- Can assign variable with new value
+
+	> tf.Variable.assign(value, use_locking=False)
+		
+    ```python
+    >> W = tf.Variable(10)
+    >> assign_op = W.assign(100)
+    >> init = tf.global_variable_initializer()
+    >> with tf.Session.as sess:
+    >>     sess.run(init)
+    >>     print(sess.run(W))
+    10
+    >> with tf.Session.as sess:
+    >>     sess.run(init)
+    >>     print(sess.run(assign_op))
+    100
+    ```
 
 - tf.variables\_initializer : Initialize all variables in __var\_list__. 
 
@@ -247,13 +266,87 @@ Computational graph of this flow should be like this.
 	>> print("W: %s b: %s loss: %s"%(curr_W, curr_b, curr_loss))
 	W: [-0.9999969] b: [ 0.99999082] loss: 5.69997e-11
     ```
-
-
     
+    ###### List of optimizer
+	|Optimizer|
+	|:-|
+	|tf.train.GridiendDescentOptimizer|
+	|tf.train.AdagradOptimizer|
+	|tf.train.MomentumOptimizer|
+	|tf.train.AdamOptimizer|
+	|tf.train.ProximalGradientDescentOptimizer|
+	|tf.train.ProximalAdagradOptimizer|
+	|tf.train.RMSPropOptimizer|
+
+#### Basic Operation
+|Operation |Description||
+|:---|:----|:--|
+|**tf.add**| Add two or more tensors (matrix addition)| |
+|**tf.mul**| Multiply two matrix in element wise||
+|**tf.matmul**| Multiply two or more matrix (Real Matrix multiplication)| |
+|**tf.cond**| Conditional statement | tf.cond(pred, fn1, fn2, name=None) |
+|**tf.exp**| Exponential of _x_| |
+|**tf.log**| Natural Logarithm of _x_ | | 
+|**tf.pow**| Compute power of _x_ and _y_ ||
+|**tf.sqrt**| Compute square root of _x_ ||
+
+
+- Example
+	
+	```python 
+	>> tf.cond(x < y, lambda: tf.add(x, z), lambda: tf.square(y)) # if x<y, return x+z if not, return y**2
+	```
+
+
+
+#### Simple Examples - Linear Regression
+
+```python
+>> import numpy as np
+>> import tensorflow as tf
+>> import matplotlib.pyplot as plt
+
+>> W = tf.Variable([.3], tf.float32)
+>> b = tf.Variable([-.3], tf.float32)
+>> x = tf.placeholder(tf.float32)
+>> linear_model = W * x + b
+>> y = tf.placeholder(tf.float32)
+>> loss = tf.reduce_sum(tf.square(linear_model - y)) # sum of the squares
+>> optimizer = tf.train.GradientDescentOptimizer(0.01)
+>> train = optimizer.minimize(loss)
+>> x_train = [1,2,3,4]
+>> y_train = [0,-1,-2,-3]
+>> init = tf.global_variables_initializer()
+>> sess = tf.Session()
+>> sess.run(init) # reset values to wrong
+>> w_cont = [];
+>> b_cont = [];
+
+>> for i in range(1000):
+>>    sess.run(train, {x:x_train, y:y_train})
+>>    curr_W, curr_b, curr_loss  = sess.run([W, b, loss], {x:x_train, y:y_train})
+>>    w_cont.append(curr_W);
+>>    b_cont.append(curr_b);
+>>    #print("[%04d] W: %s b: %s loss: %s"%(i,curr_W, curr_b, curr_loss))
+>> plt.plot(range(1,1001,1),w_cont);
+>> plt.plot(range(1,1001,1),b_cont);
+>> plt.show();
+```
+
+
+
+## Tensorboard
+
+- Can visualize your learning
+- Generate report by summary operation 
+- Can visualize **tensorboard** command in your command line (not python)
+
+
 [1] https://www.tensorflow.org/install/install_linux
 [2] https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45166.pdf
 [3] https://www.tensorflow.org/
 [4] https://www.tensorflow.org/versions/master/api_docs/python/
+[5] https://web.stanford.edu/class/cs20si
 
 [TensorFlow 시작하기.md](https://gist.github.com/haje01/202ac276bace4b25dd3f)
 
