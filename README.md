@@ -6,43 +6,42 @@
 
   1. Install pip and virtualenv 
 
-     ```bash
-     $ sudo apt-get install python-pip python-dev python-virtualenv 
-     $ sudo apt-get install python3-pip python3-dev python3-virtualenv
-     ```
+    ```bash
+    sudo apt-get install python-pip python-dev python-virtualenv 
+    sudo apt-get install python3-pip python3-dev python3-virtualenv
+    ```
   2. Create virtualenv environment
-	```bash
-     $ virtualenv --system-site-packages __target_directory__
-     ```
+    ```bash
+       virtualenv --system-site-packages __target_directory__
+    ```
 
   3. Activate virtualenv environment
-	```bash
-    # Assume that __target_directory__ is ~/tensorflow
-    $ source ~/tensorflow/bin/activate       # For bash, ksh, zsh
-    $ source ~/tensorflow/bin/activate.csh   # For csh, tcsh
+    ```bash
+      # Assume that __target_directory__ is ~/tensorflow
+      source ~/tensorflow/bin/activate       # For bash, ksh, zsh
+      source ~/tensorflow/bin/activate.csh   # For csh, tcsh
     ```
     -- Your prompt will be changed when it is activated
     ```bash
-    (tensorflow) $ 
+    (tensorflow)
     ```
     -- If you done using tensorflow, by typing **deactivate** to deactivate
     ```bash
-    (tensorflow) $ deactivate
-    $ 
+    (tensorflow) deactivate
     ```
-    
+
   4. Install tensorflow using pip by typing one of followings
-  	```bash
-    (tensorflow) $ pip  install --upgrade tensorflow     # for python2.x w/o GPU(CUDA) support
-    (tensorflow) $ pip3 install --upgrade tensorflow     # for python3.x w/o GPU(CUDA) support
-    (tensorflow) $ pip  install --upgrade tensorflow-gpu # for python2.x w/  GPU(CUDA) support
-    (tensorflow) $ pip3 install --upgrade tensorflow-gpu # for python3.x w/  GPU(CUDA) support
+    ```bash
+    (tensorflow) pip  install --upgrade tensorflow     # for python2.x w/o GPU(CUDA) support
+    (tensorflow) pip3 install --upgrade tensorflow     # for python3.x w/o GPU(CUDA) support
+    (tensorflow) pip  install --upgrade tensorflow-gpu # for python2.x w/  GPU(CUDA) support
+    (tensorflow) pip3 install --upgrade tensorflow-gpu # for python3.x w/  GPU(CUDA) support
     ```
   5. Test
-  ```bash
-  (tensorflow) $ python
-  >>> import tensorflow as tf
-  ```
+    ```bash
+    (tensorflow) python
+    import tensorflow as tf
+    ```
 
 ## Programming model and basic concepts[2]
 
@@ -71,6 +70,23 @@
 - A Tensorflow computation is described by a directed _graph_, which is compoed of a set of _nodes_.
 
 
+## Tensorflow Data formats
+
+|    Data Types     | Description                              |
+| :---------------: | :--------------------------------------- |
+|  **tf.float32**   | 32 bit floating point                    |
+|  **tf.float64**   | 64 bit floating point                    |
+|    **tf.int8**    | 8 bit signed integer                     |
+|   **tf.int16**    | 16 bit signed integer                    |
+|   **tf.int32**    | 32 bit signed integer                    |
+|   **tf.int64**    | 64 bit signed integer                    |
+|   **tf.unit8**    | 8 bit unsigned integer                   |
+|   **tf.unit16**   | 16 bit unsigned integer                  |
+|   **tf.string**   | String                                   |
+|    **tf.bool**    | Boolean                                  |
+| **tf.complex64**  | Complex number with 32 bit real / 32 bit imaginary field |
+| **tf.complex128** | Complex number with 64 bit real / 64 bit imaginary field |
+
 ## Getting Started with Basic APIs
 
 Tensorflow has APIs available in several languages such as [Python](https://www.python.org), [C++](https://en.wikipedia.org/wiki/The_C%2B%2B_Programming_Language), [Java](https://www.java.com), [Go](https://golang.org/). In those APIs, Python API is the most complete and the easist to use. 
@@ -98,8 +114,6 @@ if __name__ == "__main__": # Hello World!
 Tensor("Const:0", shape=(), dtype=float32) Tensor("Const_1:0", shape=(), dtype=float32) Tensor("node3:0", shape=(), dtype=float32)
 ```
 
-_3.0, 4.0, 5.0_ is not shown because computational graph is not evaluated using session.
-
 To evaluate Tensorflow runtime, We have to define and evaluation graph using **session**.
 
 ```python
@@ -113,10 +127,11 @@ We can build more compilcated computation using **operations**.
 ```python
 >> node3 = tf.add(node1, node2)        # Add two nodes
 >> print("node3: ", node3)             # Print node3
-node3 :  Tensor("Add:0", shape=(), dtype=float32)
+Tensor("Add:0", shape=(), dtype=float32)
 >> print("sess.run(node3): ",sess.run(node3))
 sess.run(node3): 7.0
 ```
+
 Computational graph of this flow should be like this.
 ![tf.add](https://www.tensorflow.org/images/getting_started_add.png)
 
@@ -124,12 +139,12 @@ Computational graph of this flow should be like this.
 
 - **tf.Session** is class for running Tensorflow operations.
 
-	###### Class Initialization member function. Usually leave it void.
+  ###### Class Initialization member function. Usually leave it void.
 
-	> __init__(target='', graph=None, config=None)
+  > __init__(target='', graph=None, config=None)
 
-	###### **run**  member function : Runs operations and evaluate tensors in fetchs.
-    
+  ###### **run**  member function : Runs operations and evaluate tensors in fetchs.
+
     > run(fetches, feed_dict=None, options=None, run_metadata=None)
 
 
@@ -137,49 +152,49 @@ Computational graph of this flow should be like this.
 
 - tf.constant : Create a constant in tensor.
 
-	> tf.constant(value, dtype=None, shape=None, name='Const')
+  > tf.constant(value, dtype=None, shape=None, name='Const')
 
 - tf.zeros : Create a tensor with zero vector.
 
-	> tf.zeros(shape, dtype=tf.float32, name=None)
+  > tf.zeros(shape, dtype=tf.float32, name=None)
 
-	```python
-	>> v_zero = tf.zeros([2,3])
-	>> sess = tf.Session()
-	>> print(sess.run(v_zero))
-	[[0, 0, 0]
- 	 [0, 0, 0]]
-	```
+  ```python
+  >> v_zero = tf.zeros([2,3])
+  >> sess = tf.Session()
+  >> print(sess.run(v_zero))
+  [[0, 0, 0]
+    [0, 0, 0]]
+  ```
 
 - tf.ones : Create a tensor with all elements set to '1'.
 
-	> tf.ones(shape, dtype=tf.float32, name=None)
+  > tf.ones(shape, dtype=tf.float32, name=None)
 
 - tf.fill : Create a tensor with all elements set to given value __val__.
 
-	> tf.fill(dims, value, name=None)
+  > tf.fill(dims, value, name=None)
 
-	```python
-	>> v_zero = tf.fill([2,3],3)
-	>> sess = tf.Session()
-	>> print(sess.run(v_zero))
-	[[3, 3, 3]
- 	 [3, 3, 3]]
-	```
+  ```python
+  >> v_zero = tf.fill([2,3],3)
+  >> sess = tf.Session()
+  >> print(sess.run(v_zero))
+  [[3, 3, 3]
+    [3, 3, 3]]
+  ```
 
 #### Random Values
 
 - tf.random_normal : Create Random normally distributed value with mean and standard deviation.
 
-	> tf.random_normal(shape, mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None)
+  > tf.random_normal(shape, mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None)
 
 - tf.random_uniform : Create uniformly distributed value with minimum and maximum values.
 
-	> tf.random_uniform(shape, minval=0, maxval=None, dtype=tf.float32, seed=None, name=None)
+  > tf.random_uniform(shape, minval=0, maxval=None, dtype=tf.float32, seed=None, name=None)
 
 - tf.random_gamma : Create gamma distribution
 
-	> tf.random_gamma(shape, alpha, beta=None, dtype=tf.float32, seed=None, name=None)
+  > tf.random_gamma(shape, alpha, beta=None, dtype=tf.float32, seed=None, name=None)
 
 - tf.set_random_seed : Sets a graph-level random seed.
 
@@ -193,14 +208,14 @@ Computational graph of this flow should be like this.
 
 - tf.Variables : Tensorflow graph that has multiple functionality
 
-	it has initialization member function like this
+  it has initialization member function like this
 
-	> tf.Variable.__init__(initial_value=None, trainable=True, collections=None, validate_shape=True, caching_device=None, name=None, variable_def=None, dtype=None) {:#Variable.init}
+  > tf.Variable.__init__(initial_value=None, trainable=True, collections=None, validate_shape=True, caching_device=None, name=None, variable_def=None, dtype=None) {:#Variable.init}
 
-	- Can assign variable with new value
+  - Can assign variable with new value
 
-	> tf.Variable.assign(value, use_locking=False)
-		
+  > tf.Variable.assign(value, use_locking=False)
+
     ```python
     >> W = tf.Variable(10)
     >> assign_op = W.assign(100)
@@ -217,15 +232,15 @@ Computational graph of this flow should be like this.
 
 - tf.variables\_initializer : Initialize all variables in __var\_list__. 
 
-	> variables_initializer(var_list, name='init')
+  > variables_initializer(var_list, name='init')
 
-	**tf.initialize\_variables** is equivalent but it is deprecated. Please use **tf.variables\_initializer**.
-    
+  **tf.initialize\_variables** is equivalent but it is deprecated. Please use **tf.variables\_initializer**.
+
 #### Placeholder 
 
 - tf.placeholder : Inserts a placeholder for a tensor that will be always fed. It can be fed during session is running.
 
-	> tf.placeholder(dtype, shape=None, name=None)
+  > tf.placeholder(dtype, shape=None, name=None)
 
     ```python
     >> W = tf.Variable([ 0.3], tf.float32)
@@ -239,103 +254,100 @@ Computational graph of this flow should be like this.
     >> print(sess.run(linear_model, {x:[1,2,3,4]})) # Succeed
     [0, 0.300001, 0.600002, 0.9000004]
     ```
-    
+
 #### tf.train
 
 - Tensorflow provides varios optimizers. The simplest optimizer is **gradient descent** optimizer that slowly change each variable in order to minimize loss function.
 
-	```python
-    >> import numpy as np
-	>> import tensorflow as tf
-	>> W = tf.Variable([.3], tf.float32)
-	>> b = tf.Variable([-.3], tf.float32)
-	>> x = tf.placeholder(tf.float32)
-	>> y = tf.placeholder(tf.float32)
-	>> linear_model = W * x + b
-	>> loss = tf.reduce_sum(tf.square(linear_model - y)) # sum of the squares
-	>> optimizer = tf.train.GradientDescentOptimizer(0.01) # optimizer
-	>> train = optimizer.minimize(loss) # training data
-	>> x_train = [1,2,3,4]
-	>> y_train = [0,-1,-2,-3]
-	>> init = tf.global_variables_initializer()
-	>> sess = tf.Session()
-	>> sess.run(init) # reset values to wrong
-	>> for i in range(1000):
-	>>     sess.run(train, {x:x_train, y:y_train})
-	>> curr_W, curr_b, curr_loss  = sess.run([W, b, loss], {x:x_train, y:y_train})
-	>> print("W: %s b: %s loss: %s"%(curr_W, curr_b, curr_loss))
-	W: [-0.9999969] b: [ 0.99999082] loss: 5.69997e-11
-    ```
-    
+  ```python
+  >> import numpy as np
+  >> import tensorflow as tf
+  >> W = tf.Variable([.3], tf.float32)
+  >> b = tf.Variable([-.3], tf.float32)
+  >> x = tf.placeholder(tf.float32)
+  >> y = tf.placeholder(tf.float32)
+  >> linear_model = W * x + b
+  >> loss = tf.reduce_sum(tf.square(linear_model - y)) # sum of the squares
+  >> optimizer = tf.train.GradientDescentOptimizer(0.01) # optimizer
+  >> train = optimizer.minimize(loss) # training data
+  >> x_train = [1,2,3,4]
+  >> y_train = [0,-1,-2,-3]
+  >> init = tf.global_variables_initializer()
+  >> sess = tf.Session()
+  >> sess.run(init) # reset values to wrong
+  >> for i in range(1000):
+  >>     sess.run(train, {x:x_train, y:y_train})
+  >> curr_W, curr_b, curr_loss  = sess.run([W, b, loss], {x:x_train, y:y_train})
+  >> print("W: %s b: %s loss: %s"%(curr_W, curr_b, curr_loss))
+  W: [-0.9999969] b: [ 0.99999082] loss: 5.69997e-11
+  ```
+
     ###### List of optimizer
-	|Optimizer|
-	|:-|
-	|tf.train.GridiendDescentOptimizer|
-	|tf.train.AdagradOptimizer|
-	|tf.train.MomentumOptimizer|
-	|tf.train.AdamOptimizer|
-	|tf.train.ProximalGradientDescentOptimizer|
-	|tf.train.ProximalAdagradOptimizer|
-	|tf.train.RMSPropOptimizer|
+  | Optimizer                                |
+  | :--------------------------------------- |
+  | tf.train.GridiendDescentOptimizer        |
+  | tf.train.AdagradOptimizer                |
+  | tf.train.MomentumOptimizer               |
+  | tf.train.AdamOptimizer                   |
+  | tf.train.ProximalGradientDescentOptimizer |
+  | tf.train.ProximalAdagradOptimizer        |
+  | tf.train.RMSPropOptimizer                |
 
 #### Basic Operation
-|Operation |Description||
-|:---|:----|:--|
-|**tf.add**| Add two or more tensors (matrix addition)| |
-|**tf.mul**| Multiply two matrix in element wise||
-|**tf.matmul**| Multiply two or more matrix (Real Matrix multiplication)| |
-|**tf.cond**| Conditional statement | tf.cond(pred, fn1, fn2, name=None) |
-|**tf.exp**| Exponential of _x_| |
-|**tf.log**| Natural Logarithm of _x_ | | 
-|**tf.pow**| Compute power of _x_ and _y_ ||
-|**tf.sqrt**| Compute square root of _x_ ||
+| Operation     | Description                              |                                    |
+| :------------ | :--------------------------------------- | :--------------------------------- |
+| **tf.add**    | Add two or more tensors (matrix addition) |                                    |
+| **tf.mul**    | Multiply two matrix in element wise      |                                    |
+| **tf.matmul** | Multiply two or more matrix (Real Matrix multiplication) |                                    |
+| **tf.cond**   | Conditional statement                    | tf.cond(pred, fn1, fn2, name=None) |
+| **tf.exp**    | ${e}^x$                                  |                                    |
+| **tf.log**    | ${log}_e x$                              |                                    |
+| **tf.pow**    | ${x}^y$                                  |                                    |
+| **tf.sqrt**   | $\sqrt{x}$                               |                                    |
 
 
 - Example
-	
-	```python 
-	>> tf.cond(x < y, lambda: tf.add(x, z), lambda: tf.square(y)) # if x<y, return x+z if not, return y**2
-	```
+
+  ```python 
+  >> tf.cond(x < y, lambda: tf.add(x, z), lambda: tf.square(y)) # if x<y, return x+z if not, return y**2
+  ```
 
 
 
-#### Simple Examples - Linear Regression
 
-```python
->> import numpy as np
->> import tensorflow as tf
->> import matplotlib.pyplot as plt
+## Reading Data
 
->> W = tf.Variable([.3], tf.float32)
->> b = tf.Variable([-.3], tf.float32)
->> x = tf.placeholder(tf.float32)
->> linear_model = W * x + b
->> y = tf.placeholder(tf.float32)
->> loss = tf.reduce_sum(tf.square(linear_model - y)) # sum of the squares
->> optimizer = tf.train.GradientDescentOptimizer(0.01)
->> train = optimizer.minimize(loss)
->> x_train = [1,2,3,4]
->> y_train = [0,-1,-2,-3]
->> init = tf.global_variables_initializer()
->> sess = tf.Session()
->> sess.run(init) # reset values to wrong
->> w_cont = [];
->> b_cont = [];
+###### Feeding
 
->> for i in range(1000):
->>    sess.run(train, {x:x_train, y:y_train})
->>    curr_W, curr_b, curr_loss  = sess.run([W, b, loss], {x:x_train, y:y_train})
->>    w_cont.append(curr_W);
->>    b_cont.append(curr_b);
->>    #print("[%04d] W: %s b: %s loss: %s"%(i,curr_W, curr_b, curr_loss))
->> plt.plot(range(1,1001,1),w_cont);
->> plt.plot(range(1,1001,1),b_cont);
->> plt.show();
-```
+-   Feed directly to the tensor (using **tf.placeholder**)
+
+-   A **placeholder** exist solely to serve as the target to feed.
+
+    ```python
+    x = tf.placeholder(tf.float32)
+    x_train = 0.1;
+    ##### Functions that named _loss_ #####
+    train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
+    #####  Init and extra #####
+    for i in range(1000):
+        sess.run(train, {x:x_train}) # Feed #####
+    ```
+
+###### File Reading
+
+-   Use internal file read function 
+    -   _tf.TextLineReader_ / _tf.decode_csv_ for parsing csv (comma-separated value format)
+    -   _tf.FixedLengthRecorderReader_ / _tf.decode_raw_ to read binary files.
+
+###### Batching
+
+-   Feed using Queue (FIFO or random queue) / or Threading
+    -   _tf.train.shuffle_batch_ - Randomize queue
+    -   QueueRunner object - tf.train.QueueRunner()
 
 
 
-## Tensorboard
+## Tensorboard[6]
 
 - Can visualize your learning
 - Generate report by summary operation 
@@ -343,10 +355,16 @@ Computational graph of this flow should be like this.
 
 
 [1] https://www.tensorflow.org/install/install_linux
+
 [2] https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45166.pdf
+
 [3] https://www.tensorflow.org/
+
 [4] https://www.tensorflow.org/versions/master/api_docs/python/
+
 [5] https://web.stanford.edu/class/cs20si
+
+[6] https://www.tensorflow.org/get_started/summaries_and_tensorboard
 
 [TensorFlow 시작하기.md](https://gist.github.com/haje01/202ac276bace4b25dd3f)
 
